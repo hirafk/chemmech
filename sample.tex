@@ -1,0 +1,153 @@
+\documentclass[a4paper]{article}
+\usepackage{luatexja}            % Japanese
+\usepackage{pgfplots}
+\usepackage{graphics}
+\usepackage{chemfig}
+\usepackage{mol2chemfig}     % mol2chemfigパッケージ
+\usepackage{tikz}
+\usepackage{xstring}
+\usepackage{chemmech}
+\pgfplotsset{compat=1.18}
+\usetikzlibrary{calc} 
+\title{Macros for electron-pushing arrows}
+\author{Name}
+\date{\today}
+\begin{document}
+\maketitle
+ChemMech Package Example Automated electron pushing arrows for \\
+ChemFig
+\section*{Bond Modifications}
+\vspace{1cm}
+\textbf{cleavage}
+\schemestart
+\chemfig{
+                     @{a1}O%
+    =[@{a1-2}:210]@{a2}%
+                        (
+        -[@{a2-3}:150]@{a3}%
+                        )
+    -[@{a2-4}:270]@{a4}%
+}
+\bdclev[1]{a2-a1}
+\schemestop
+\hspace{2cm}
+\textbf{form}
+\schemestart
+\chemfig{
+                     @{a1}\charge{45 = $\scriptstyle-$}{O}%
+    -[@{a1-2}:210]@{a2}\charge{-30 = $\scriptstyle+$}{}%
+                        (
+        -[@{a2-3}:150]@{a3}%
+                        )
+    -[@{a2-4}:270]@{a4}%
+}
+\bdform[1]{a2-a1}
+\schemestop
+\\
+\vspace{2cm}
+\textbf{relay}
+\schemestart
+\chemfig{
+                  @{a3}%
+    =[@{a1-3}:330]@{a1}%
+     -[@{a1-2}:30]@{a2}%
+    =[@{a2-4}:330]@{a4}%
+}
+\bdrelay{a3-1-2}
+\bdrelay{a1-2-4}
+\schemestop
+\section*{Intermolecular Attacks}
+\vspace{1cm}
+\textbf{nucleophilic attack}\qquad
+\schemestart
+\chemfig{@{n}\charge{45 = $\scriptstyle-$}{Nu}}
+\qquad
+    \chemfig{
+                  @{c2}%
+    -[@{c1-2}:210]@{c1}\charge{-45 = $\scriptstyle+$}{}%
+                     (
+        -[@{c1-3}:150]@{c3}%
+                     )
+    -[@{c1-4}:270]@{c4}%
+    }
+\nuatk[90]{n}{c1-c4}
+\schemestop
+\\
+
+\vspace{2cm}
+\textbf{electrophilic attack}\qquad
+\schemestart
+\chemfig{
+                   @{c1}%
+    =[@{c1-2}:330]@{c2}%
+     -[@{c2-4}:270]@{c4}%
+    =[@{c4-6}:210]@{c6}%
+     -[@{c5-6}:150]@{c5}%
+     =[@{c3-5}:90]@{c3}%
+                      (
+          -[@{c1-3}:30]% -> 1
+                      )
+}
+\qquad
+\chemfig{@{e}\charge{45 = $\scriptstyle+$}{E}}
+\elatk[90]{c2-1}{e}
+\schemestop
+\\
+\subsection*{EX. E2 elimination}\qquad
+\chemfig{@{n}\charge{45 = $\scriptstyle-$}{B}}
+\qquad
+\chemfig{
+                        @{c1}Br%
+    -[@{c1-2}:210,1.613]@{c2}C%
+                           (
+              -[@{c2-4}:230]@{c4}H%
+                           )
+                           (
+              -[@{c2-5}:310]@{c5}H%
+                           )
+    -[@{c2-3}:150,1.613]@{c3}C%
+                           (
+               -[@{c3-6}:60]@{c6}H%
+                           )
+                           (
+              -[@{c3-7}:150]@{c7}H%
+                           )
+          -[@{c3-8}:240]@{c8}H%
+}
+\bdclev[1]{c2-c1}
+\bdrelay{c8-c3-c2}
+\nuatk[270]{n}{c8-c3}
+\subsection*{EX. hemiacetal reaction}
+\schemestart
+\chemfig{
+                      H@{b1}O%
+    -[@{b1-2}:0,,2,1]@{b2}CH_3%
+}
+\qquad
+\chemfig{
+                  @{c1}O%
+    =[@{c1-2}:270,0.7]@{c2}%
+                     (
+        -[@{c2-3}:210]@{c3}%
+                     )
+    -[@{c2-4}:330]@{c4}%
+}
+\nuatk[270]{b1}{c2-1}
+\bdclev[1]{c2-c1}
+\arrow
+\chemfig{
+                    @{a2}HO%
+    -[@{a2-3}:30,,2]@{a3}%
+                       (
+          -[@{a3-4}:120]@{a4}%
+                       )
+                       (
+          -[@{a3-5}:300]@{a5}%
+                       )
+       -[@{a1-3}:30]@{a1}O%
+        (-[:60]@{a7}H)
+      -[@{a1-6}:330]@{a6}%%
+}
+\schemestop
+\end{document}
+%================ヘミセアセタール===================
